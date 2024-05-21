@@ -1,0 +1,5 @@
+PORT = 8801
+DB_URL = 'mongodb://localhost:27017/SmartCloud/Example/DBTest' // Smart CloudAI
+OPENAI_API_KEY='YourKey' // SmartCloud AI
+stripe = 'YourKey'
+strip2 = 'your key '
