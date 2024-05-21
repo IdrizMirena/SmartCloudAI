@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Universal Cloud File System</title>
+    <link rel="shortcut icon" href="avatar.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+
+<body>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap");
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Roboto Mono", monospace;
+        }
+
+        .main {
+            min-height: 100vh;
+            position: relative;
+            width: 100%;
+            background: linear-gradient(120deg, #1864dd, #c2e9fb, #6a6f77);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main .image-container {
+            padding: 10px;
+        }
+
+        .main .image-container .image {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main .image-container .image img {
+            width: 350px;
+            align-items: center;
+        }
+
+        .main .image-container h1 {
+            color: #0027d4;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 40px;
+        }
+
+        .main .image-container p {
+            color: #324042;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .main .input {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40vw;
+            height: 50px;
+            border-radius: 20px;
+            background: rgba(110, 105, 187, 0.5);
+        }
+
+        .main .input .talk {
+            background: transparent;
+            outline: none;
+            border: none;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        .main .input .talk i {
+            font-size: 20px;
+            color: #aed0d0;
+        }
+
+        .main .input .content {
+            color: #aed0d0;
+            font-size: 15px;
+            margin-right: 20px;
+        }
+    </style>
+    <section class="main">
+        <div class="image-container">
+            <div class="image">
+                <img src="giphy.gif" alt="image">
+            </div>
+            <h1>UCFM Robot</h1>
+            <p>I'm a Virtual Assistant UCFM, How may I help you?</p>
+        </div>
+        <div class="input">
+            <button class="talk"><i class="fas fa-microphone-alt"></i></button>
+            <h1 class="content"> Click here to speak</h1>
+        </div>
+    </section>
+    <script>
+        const btn = document.querySelector('.talk');
+        const content = document.querySelector('.content');
+
+        function speak(text) {
+            const textSpeak = new SpeechSynthesisUtterance(text);
+            textSpeak.rate = 1;
+            textSpeak.volume = 1;
+            textSpeak.pitch = 1;
+            window.speechSynthesis.speak(textSpeak);
+        }
+
+        function wishMe() {
+            const day = new Date();
+            const hour = day.getHours();
+
+            if (hour >= 0 && hour < 12) {
+                speak("Good Morning Boss...");
+            } else if (hour >= 12 && hour < 17) {
+                speak("Good Afternoon Master...");
+            } else {
+                speak("Good Evening Sir...");
+            }
+        }
+
+        window.addEventListener('load', () => {
+            speak("Initializing UCFM Robot...");
+            wishMe();
+        });
+
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const recognition = new SpeechRecognition();
+
+        recognition.onresult = (event) => {
+            const currentIndex = event.resultIndex;
+            const transcript = event.results[currentIndex][0].transcript;
+            content.textContent = transcript;
+            takeCommand(transcript.toLowerCase());
+        }
+
+        btn.addEventListener('click', () => {
+            content.textContent = "Listening....";
+            recognition.start();
+        });
+
+        function takeCommand(message) {
+            if (message.includes('hey') || message.includes('hello')) {
+                speak("Hello Sir, How May I Help You?");
+            } else if (message.includes("open google")) {
+                window.open("https://google.com", "_blank");
+                speak("Opening Google...");
+            } else if (message.includes("open youtube")) {
+                window.open("https://youtube.com", "_blank");
+                speak("Opening YouTube...");
+            } else if (message.includes("open facebook")) {
+                window.open("https://facebook.com", "_blank");
+                speak("Opening Facebook...");
+            } else if (message.includes('what is ucfm')) {
+                speak("UCFM është një platformë Cloud e zhvilluar nga një zhvillues nga Kosova, i quajtur Idriz Mirena.");
+            } else if (message.includes('what is') || message.includes('who is') || message.includes('what are')) {
+                window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
+                const finalText = "This is what I found on the internet regarding " + message;
+                speak(finalText);
+            } else if (message.includes('wikipedia')) {
+                window.open(`https://en.wikipedia.org/wiki/${message.replace("wikipedia", "")}`, "_blank");
+                const finalText = "This is what I found on Wikipedia regarding " + message;
+                speak(finalText);
+            } else if (message.includes('time')) {
+                const time = new Date().toLocaleString(undefined, { hour: "numeric", minute: "numeric" });
+                const finalText = time;
+                speak(finalText);
+            } else if (message.includes('date')) {
+                const date = new Date().toLocaleString(undefined, { month: "short", day: "numeric" });
+                const finalText = date;
+                speak(finalText);
+            } else if (message.includes('calculator')) {
+                window.open('Calculator:///');
+                const finalText = "Opening Calculator";
+                speak(finalText);
+            } else {
+                window.open(`https://www.google.com/search?q=${message.replace(" ", "+")}`, "_blank");
+                const finalText = "I found some information for " + message + " on Google";
+                speak(finalText);
+            }
+        }
+    </script>
+</body>
+
+</html>

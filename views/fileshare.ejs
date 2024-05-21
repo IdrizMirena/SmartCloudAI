@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCloud AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(315deg, rgb(26, 3, 71) 3%, rgba(60, 132, 206, 1) 38%, rgba(48, 238, 226, 1) 68%, rgb(172, 101, 101) 98%);
+            color: #333;
+            overflow: auto;
+            animation: gradient 15s ease infinite;
+            margin: 0;
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            padding: 0;
+            box-sizing: border-box;
+            height: 10vh;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        .wave {
+            background: rgb(255 255 255 / 25%);
+            border-radius: 1000% 1000% 0 0;
+            position: fixed;
+            width: 200%;
+            height: 12em;
+            animation: wave 10s -3s linear infinite;
+            transform: translate3d(0, 0, 0);
+            opacity: 0.8;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .wave:nth-of-type(2) {
+            bottom: -1.25em;
+            animation: wave 18s linear reverse infinite;
+            opacity: 0.8;
+        }
+
+        .wave:nth-of-type(3) {
+            bottom: -2.5em;
+            animation: wave 20s -1s reverse infinite;
+            opacity: 0.9;
+        }
+
+        @keyframes wave {
+            2% {
+                transform: translateX(1);
+            }
+
+            25% {
+                transform: translateX(-25%);
+            }
+
+            50% {
+                transform: translateX(-50%);
+            }
+
+            75% {
+                transform: translateX(-25%);
+            }
+
+            100% {
+                transform: translateX(1);
+            }
+        }
+
+        .navbar-custom {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #0056b3;
+        }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .container {
+            padding-top: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .file-upload-wrapper {
+            background-color: #ffffff;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 40px;
+            width: 800px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: #0056b3;
+        }
+
+        h2,
+        p {
+
+            text-align: center;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        p {
+            color: #0056b3;
+        }
+
+        .fallback {
+            width: 100%;
+            text-align: center;
+        }
+
+        .fallback input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .fallback input[type="submit"] {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .fallback input[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .file-upload-wrapper {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-nav .nav-item {
+                padding: 10px 0;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .navbar-brand img {
+                width: 40px;
+            }
+
+            .navbar-collapse {
+                background-color: #f8f9fa;
+            }
+
+            .navbar-nav .nav-link {
+                color: #007bff;
+            }
+
+            .navbar-nav .nav-link:hover {
+                color: #0056b3;
+            }
+
+            .navbar-nav.ms-auto {
+                margin-left: auto;
+            }
+        }
+
+        .main-content,
+        .second-main-content {
+            max-width: 840px;
+            max-height: 700px;
+            height: 350px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff07;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+
+        }
+
+        .main-content {
+            width: 90%;
+            height: 90%;
+        }
+
+        .second-main-content {
+            width: 90%;
+
+        }
+
+        .second-main-content form {
+            margin-top: 20px;
+            display: grid;
+            gap: .5rem;
+            grid-template-columns: auto 1fr;
+            max-width: 90%;
+            max-height: 80%;
+            margin: 0 auto;
+            padding: 1rem;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .second-main-content label {
+            margin-bottom: 0.5rem;
+        }
+
+        .second-main-content input {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+        }
+
+        .second-main-content button {
+            grid-column: span 2;
+            padding: 0.75rem;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .second-main-content button:hover {
+            background-color: #2980b9;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+    <nav style="box-shadow: 10px 10px 10px rgb(57, 57, 61);" class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container-fluid">
+            <img src="logo.ico" alt="Logo" width="44px">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/funcCloud"><i class="fas fa-cloud"></i> Cloud</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/app"><i class="fas fa-mobile-alt"></i> App Cloud</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/fileshare"><i class="fas fa-file-alt"></i> File/App Share</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ucfmAi"><i class="fas fa-robot"></i> AI Image Generator</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/chatAi"><i class="fas fa-comments"></i> Virtual assistant</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/func2"><i class="fas fa-edit"></i> Edit Files</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/fileGenerator"><i class="fas fa-robot"></i> AI File Generator</a>
+                    </li>
+                </ul>
+                <form class="d-flex ms-auto">
+                    <a href="/suport" class="btn btn-outline-primary">Instructions and support</a>
+                    <a href="/logout" class="btn btn-outline-primary" type="submit">Logout</a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="second-main-content">
+            <br>
+            <h2>File Share 📩</h2>
+            <% if (locals.fileLink !=null) { %>
+                <div style="margin-bottom: 1rem;">
+                    Take your link with yours files
+                    <a href="<%= locals.fileLink %>">
+                        <%= locals.fileLink %>
+                    </a>
+                </div>
+                <% } %>
+                    <form action="/upload" method="post"
+                        style="display: grid; gap: .5rem; grid-template-columns: auto 1fr; max-width: 500px; margin: 0 auto;"
+                        enctype="multipart/form-data">
+                        <label for="file">File:</label>
+                        <input type="file" id="file" name="file" required />
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" />
+                        <button style="grid-column: span 2;" type="submit">Share</button>
+                    </form>
+        </div>
+    </div>
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</body>
+
+</html>

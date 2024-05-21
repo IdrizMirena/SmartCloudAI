@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.js"></script>
+    <title>UCFM</title>
+</head>
+
+<body>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            max-width: 1250px;
+            background-image: linear-gradient(to right, rgb(88, 142, 212), rgb(3, 16, 54));
+            padding: 3rem 0 0 3rem;
+            font-size: 12px;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .site-wrap {
+            height: 600px;
+            display: grid;
+            grid-template-columns: 280px 1fr;
+        }
+
+        .site-nav {
+            text-decoration: none;
+            background: #2375df;
+            color: white;
+            display: flex;
+            flex-direction: column;
+
+            a {
+                color: inherit;
+            }
+
+            ul {
+                margin-bottom: auto;
+
+                li {
+                    a {
+
+                        text-decoration: none;
+                        display: block;
+                        padding: 0.75rem 0.5rem 0.75rem 2rem;
+                        position: relative;
+
+                        &:hover,
+                        &:focus {
+                            color: #a0b0d3;
+                        }
+                    }
+
+                    &.active>a {
+                        background: linear-gradient(to right, #083988, transparent);
+
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            height: 100%;
+                            background: #fdfdfd;
+                            width: 5px;
+
+                        }
+                    }
+                }
+
+                ul {
+                    padding-left: 1rem;
+                    margin-bottom: 0.5rem;
+
+                    a {
+                        padding-top: 0.4rem;
+                        padding-bottom: 0.4rem;
+                    }
+                }
+            }
+        }
+
+        .note {
+            width: calc(50% - 6rem);
+            text-align: center;
+            margin: 2rem;
+            color: rgb(255, 255, 255);
+            background: #07086b;
+            border-radius: 10px;
+            padding: 1rem;
+
+            h3 {
+                font-size: 0.9rem;
+                margin: 0 0 0.4rem 0;
+            }
+
+            p {
+                color: #717783;
+            }
+        }
+
+        .name {
+            font-size: 1.3rem;
+            position: relative;
+            margin: 2rem 0 2rem 0;
+            padding: 0 2.5rem 0.5rem 2rem;
+            width: calc(100% - 3rem);
+
+            svg {
+                position: absolute;
+                fill: white;
+                width: 16px;
+                height: 16px;
+                right: 0;
+                top: 7px;
+            }
+
+            &::after {
+                content: "";
+                width: 8px;
+                height: 8px;
+                background: #4777ce;
+                border-radius: 20px;
+                position: absolute;
+                top: 6px;
+                right: -2px;
+            }
+        }
+
+        main {
+            background: #ebecee;
+            margin-left: -2rem;
+            position: relative;
+
+            >header {
+                padding: 3rem 3rem 0 3rem;
+            }
+        }
+
+        .content-columns {
+            padding: 3rem;
+            display: flex;
+            background: #e5e5e9;
+
+            .col {
+                min-height: 500px;
+                width: 200px;
+                padding: 1rem;
+                background: #ebecee;
+                margin-right: 1rem;
+                box-shadow: 0 0 5px rgba(black, 0.04);
+                border-radius: 5px;
+
+                &:nth-child(1) {
+                    border-top: 4px solid #50aaee;
+                }
+
+                &:nth-child(2) {
+                    border-top: 4px solid #d56ec7;
+                }
+
+                &:nth-child(3) {
+                    border-top: 4px solid #e37e55;
+                }
+
+                &:nth-child(4) {
+                    border-top: 4px solid #ebbd41;
+                }
+            }
+        }
+
+        .item {
+            background: white;
+            box-shadow: 0 2px 4px rgba(black, 0.07);
+            min-height: 50px;
+            border-radius: 5px;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .nav-tabs {
+            a {
+                margin-right: 2rem;
+                display: inline-block;
+                padding: 1rem 0 1rem 0;
+                font-size: 1.15rem;
+                color: #8c939e;
+                position: relative;
+
+                &.active {
+                    color: #101620;
+                    font-weight: 600;
+
+                    span {
+                        background: #d9dfea;
+                        color: #5887d1;
+                    }
+
+                    &::after {
+                        content: "";
+                        position: absolute;
+                        bottom: 0;
+                        left: 0;
+                        width: 100%;
+                        height: 4px;
+                        background: #457ace;
+                        border-top-right-radius: 10px;
+                        border-top-left-radius: 10px;
+                    }
+                }
+
+                span {
+                    border-radius: 10px;
+                    font-size: 0.8rem;
+                    padding: 0.25rem 0.4rem;
+                    font-weight: 600;
+                    vertical-align: middle;
+                    position: relative;
+                    top: -2px;
+                    background: #dfe0e2;
+                    color: #868d99;
+                }
+            }
+        }
+
+        .main-content,
+        .second-main-content {
+            border-style: groove;
+            max-width: 440px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff84;
+            box-shadow: 3 3 0px rgba(0, 0, 0, 0.1);
+            text-align: center;
+
+        }
+
+        .main-content {
+            width: 90%;
+            height: 90%;
+        }
+
+        .second-main-content {
+            width: 90%;
+
+        }
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.541);
+            margin-top: 20px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #2980b9;
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .file-info i {
+            margin-right: 10px;
+        }
+
+        @media only screen and (max-width: 450px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar ul {
+                margin-top: 10px;
+                padding: 0;
+                display: none;
+            }
+
+            .navbar ul.show {
+                display: flex;
+            }
+
+            .navbar ul li {
+                margin-right: 0;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .navbar .logout-btn {
+                margin-top: 10px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-content,
+            .second-main-content {
+                width: 100%;
+            }
+        }
+
+        .second-main-content form {
+            background-color: rgba(32, 54, 151, 0.541);
+            margin-top: 20px;
+            display: grid;
+            gap: .5rem;
+            grid-template-columns: auto 1fr;
+            max-width: 90%;
+            max-height: 80%;
+            margin: 0 auto;
+            padding: 1rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .second-main-content label {
+            margin-bottom: 0.5rem;
+        }
+
+        .second-main-content input {
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+        }
+
+        .second-main-content button {
+            grid-column: span 2;
+            padding: 0.75rem;
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .second-main-content button:hover {
+            background-color: #2980b9;
+        }
+        
+        .cloud-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            animation: floatCloud 5s infinite linear;
+        }
+
+        @keyframes floatCloud {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .cloud-icon img {
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+
+        .site-wrap::before {
+            content: "\2601";
+            font-size: 50px;
+            color: rgba(255, 255, 255, 0.8);
+            position: absolute;
+            top: 50px;
+            left: 50px;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+    </style>
+    <div class="site-wrap">
+
+        <nav class="site-nav">
+
+            <div class="name">
+                <img src="logo.ico" alt="Logo" width="84px">
+
+                <svg width="24" height="24" viewBox="0 0 24 24">
+                    <path
+                        d="M11.5,22C11.64,22 11.77,22 11.9,21.96C12.55,21.82 13.09,21.38 13.34,20.78C13.44,20.54 13.5,20.27 13.5,20H9.5A2,2 0 0,0 11.5,22M18,10.5C18,7.43 15.86,4.86 13,4.18V3.5A1.5,1.5 0 0,0 11.5,2A1.5,1.5 0 0,0 10,3.5V4.18C7.13,4.86 5,7.43 5,10.5V16L3,18V19H20V18L18,16M19.97,10H21.97C21.82,6.79 20.24,3.97 17.85,2.15L16.42,3.58C18.46,5 19.82,7.35 19.97,10M6.58,3.58L5.15,2.15C2.76,3.97 1.18,6.79 1,10H3C3.18,7.35 4.54,5 6.58,3.58Z">
+                    </path>
+                </svg>
+            </div>
+
+            <ul>
+                <li><a href="/funcCloud"><i class="fas fa-star"></i> Cloud</a></li>
+                <li><a href="/app"><i class="fas fa-upload"></i> App Upload</a></li>
+                <li><a href="/fileshare"><i class="fas fa-share-alt"></i> File Share</a></li>
+                <li class="active" class="dropdown">
+                    <a href="/video" class="dropbtn">How to work?</a>
+                    <div class="dropdown-content">
+                        <a href="/video-cl">How to work in the Cloud ?</a>
+                        <a href="/video-fl">How to work in File Share ?</a>
+                        <a href="/vd-premium">How to buy Premium ?</a>
+                    </div>
+                </li>
+                <li><a href="/premium"><i class="fas fa-star"></i> Premium</a></li>
+                <li><a href="/ucfmAi"><i class="fas fa-brain"></i> Testing with AI</a></li>
+            </ul>
+
+            <div class="note">
+                <div class="logout-btn">
+                    <a style="text-decoration: none;" href="/logout">Logout</a>
+                </div>
+            </div>
+
+        </nav>
+
+        <main>
+
+            <header>
+                <div class="breadcrumbs">
+                    <a style="text-decoration: none;" href="#">How to buy Premium ?</a>
+                </div>
+
+                <h1 style="text-align: center;" class="title">Welcome to Video Instruction 👋</h1>
+            </header>
+
+            <video style="margin-left: 170px;" src="/videoplayer-premium" width="640" height="380" 
+           controls></video>
+            
+    </div>
+
+    </div>
+
+    </main>
+
+    </div>
+    <script>
+        const navTabs = document.querySelectorAll("#nav-tabs > a");
+        navTabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                navTabs.forEach((tab) => {
+                    tab.classList.remove("active");
+                });
+                tab.classList.add("active");
+            });
+        });
+
+    </script>
+</body>
+
+</html>

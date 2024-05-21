@@ -1,0 +1,603 @@
+<!-- views/funcCloud.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SmartCloud AI</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: linear-gradient(315deg, rgb(26, 3, 71) 3%, rgba(60, 132, 206, 1) 38%, rgba(48, 238, 226, 1) 68%, rgb(172, 101, 101) 98%);
+            color: #333;
+            overflow: auto;
+            animation: gradient 15s ease infinite;
+            margin: 0;
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            padding: 0;
+            box-sizing: border-box;
+            height: 10vh;
+        }
+
+        .navbar-custom {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #0056b3;
+        }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .container {
+            padding-top: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .dropzone .dz-message {
+            font-size: 18px;
+            color: #333;
+        }
+
+        .dropzone .dz-success-mark {
+            display: none;
+        }
+
+        .dropzone {
+            border: none;
+            /* Hiqni border-in ekzistues */
+            background-color: transparent;
+            /* Bëni background-in transparent */
+        }
+
+        .dropzone .dz-error-message {
+            color: #d9534f;
+        }
+
+        .dropzone .dz-preview .dz-remove {
+            background-color: #d9534f;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+        }
+
+        .dropzone .dz-preview .dz-remove:hover {
+            background-color: #c9302c;
+        }
+
+
+        .file-upload-wrapper {
+            background-color: #ffffff;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 40px;
+            width: 800px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: #0056b3;
+        }
+
+        h2,
+        p {
+            text-align: center;
+        }
+
+        h2 {
+            color: #007bff;
+        }
+
+        p {
+            color: #0056b3;
+        }
+
+        .fallback {
+            width: 100%;
+            text-align: center;
+        }
+
+        .fallback input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .fallback input[type="submit"] {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .fallback input[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        .advertisement {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        .advertisement img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+
+        @media (max-width: 768px) {
+            .file-upload-wrapper {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-nav .nav-item {
+                padding: 10px 0;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .navbar-brand img {
+                width: 40px;
+            }
+
+            .navbar-collapse {
+                background-color: #f8f9fa;
+            }
+
+            .navbar-nav .nav-link {
+                color: #007bff;
+            }
+
+            .navbar-nav .nav-link:hover {
+                color: #0056b3;
+            }
+
+            .navbar-nav.ms-auto {
+                margin-left: auto;
+            }
+        }
+
+
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 0%;
+            }
+
+            50% {
+                background-position: 100% 100%;
+            }
+
+            100% {
+                background-position: 0% 0%;
+            }
+        }
+
+        .wave {
+            background: rgb(255 255 255 / 25%);
+            border-radius: 1000% 1000% 0 0;
+            position: fixed;
+            width: 200%;
+            height: 12em;
+            animation: wave 10s -3s linear infinite;
+            transform: translate3d(0, 0, 0);
+            opacity: 0.8;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .wave:nth-of-type(2) {
+            bottom: -1.25em;
+            animation: wave 18s linear reverse infinite;
+            opacity: 0.8;
+        }
+
+        .wave:nth-of-type(3) {
+            bottom: -2.5em;
+            animation: wave 20s -1s reverse infinite;
+            opacity: 0.9;
+        }
+
+        @keyframes wave {
+            2% {
+                transform: translateX(1);
+            }
+
+            25% {
+                transform: translateX(-25%);
+            }
+
+            50% {
+                transform: translateX(-50%);
+            }
+
+            75% {
+                transform: translateX(-25%);
+            }
+
+            100% {
+                transform: translateX(1);
+            }
+        }
+
+        .chatbot-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 20px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .chatbot-input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .chatbot-input input {
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .chatbot-input button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .chatbot-input button:hover {
+            background-color: #0056b3;
+        }
+
+        .chatbot-output {
+            display: none;
+            background: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+        }
+
+        .robot-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+
+        /**/
+
+
+
+        h1 {
+            text-align: center;
+            color: #004ea7;
+        }
+
+        label,
+        input,
+        button {
+            display: block;
+            margin: 20px auto;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        input,
+        button {
+            width: 50%;
+            border-radius: 4px;
+        }
+
+        input {
+            border: 1px solid #ddd;
+        }
+
+        button {
+            color: #fff;
+            background-color: #219abc;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #190b94;
+        }
+
+        #output {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+
+
+    <nav style="box-shadow: 10px 10px 10px rgb(57, 57, 61);" class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container-fluid">
+            <img src="logo.ico" alt="Logo" width="44px">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/funcCloud"><i class="fas fa-cloud"></i> Cloud</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="/app"><i class="fas fa-mobile-alt"></i> App Cloud</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/fileshare"><i class="fas fa-file-alt"></i> File/App Share</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ucfmAi"><i class="fas fa-robot"></i> AI Image Generator</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/chatAi"><i class="fas fa-comments"></i> Virtual assistant</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/func2"><i class="fas fa-edit"></i> Edit Files</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/fileGenerator"><i class="fas fa-robot"></i> AI File Generator</a>
+                    </li>
+                </ul>
+                <form class="d-flex ms-auto">
+                    <a href="/suport" class="btn btn-outline-primary">Instructions and support</a>
+                    <a href="/logout" class="btn btn-outline-primary" type="submit">Logout</a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+
+    <center>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h1>AI File Generator</h1>
+        <label style="color: white;" for="file-type">Enter file type (e.g., text, excel, word, python, java):</label>
+        <input type="text" id="file-type" placeholder="Enter file type">
+        <button id="generate-file">Generate File</button>
+        <div id="output"></div>
+
+    </center>
+
+    <footer style="padding: 30px;">
+        <center>
+            <a target="_blank" href="https://www.ipko.com/en/">
+                <img width="500px" height="130" src="ipko.png" alt="ipko">
+            </a>
+
+            <a target="_blank" href="https://www.donbosko-kosova.com/">
+                <img width="500px" height="130" src="bosko.png" alt="ipko">
+            </a </center>
+    </footer>
+
+    <script>
+        document.getElementById('generate-file').addEventListener('click', async () => {
+            const result = await createAndTrainModel();
+            const fileType = document.getElementById('file-type').value.trim().toLowerCase();
+            const { content, fileName, contentType, suggestion } = generateContent(result, fileType);
+
+            if (suggestion) {
+                if (confirm(`Did you mean "${suggestion}" instead of "${fileType}"?`)) {
+                    const { content, fileName, contentType } = generateContent(result, suggestion);
+                    downloadFile(content, fileName, contentType);
+                } else {
+                    downloadFile(content, fileName, contentType);
+                }
+            } else {
+                downloadFile(content, fileName, contentType);
+            }
+        });
+
+        async function createAndTrainModel() {
+            const model = tf.sequential();
+            model.add(tf.layers.dense({ units: 1, inputShape: [1] }));
+            model.compile({
+                loss: 'meanSquaredError',
+                optimizer: 'sgd'
+            });
+
+            const xs = tf.tensor2d([1, 2, 3, 4], [4, 1]);
+            const ys = tf.tensor2d([1, 3, 5, 7], [4, 1]);
+
+            await model.fit(xs, ys, { epochs: 250 });
+
+            const prediction = model.predict(tf.tensor2d([5], [1, 1]));
+            const result = prediction.dataSync()[0];
+            return result;
+        }
+
+        function downloadFile(content, fileName, contentType) {
+            const a = document.createElement("a");
+            const file = new Blob([content], { type: contentType });
+            a.href = URL.createObjectURL(file);
+            a.download = fileName;
+            a.click();
+        }
+
+        function generateContent(result, fileType) {
+            let content, fileName, contentType;
+            const validFileTypes = {
+                'text': 'text/plain',
+                'excel': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                'word': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+                'python': 'text/x-python',
+                'java': 'text/x-java-source',
+                'html': 'text/html',
+                'css': 'text/css',
+                'javascript': 'application/javascript',
+                'json': 'application/json',
+                'xml': 'application/xml',
+                'csv': 'text/csv',
+                'ppt': 'application/vnd.ms-powerpoint',
+                'pptx': 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+                'pdf': 'application/pdf'
+            };
+
+            if (!Object.keys(validFileTypes).includes(fileType)) {
+                let suggestion = null;
+                for (const key of Object.keys(validFileTypes)) {
+                    if (fileType.startsWith(key)) {
+                        suggestion = key;
+                        break;
+                    }
+                }
+                content = `Generate by SmartCloud.AI: ${result}`;
+                contentType = 'text/plain';
+                return { content, fileName, contentType, suggestion };
+            }
+
+            switch (fileType) {
+                case 'text':
+                    content = `Generate by SmartCloud.AI: ${result}`;
+                    fileName = 'SmartCloudAI.txt';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'excel':
+                    content = `data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==`;
+                    fileName = 'SmartCloudAI.xlsx';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'word':
+                    content = `data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==`;
+                    fileName = 'SmartCloudAI.docx';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'python':
+                    content = `# Python script\nprint("Generate by SmartCloud.AI:", ${result})`;
+                    fileName = 'SmartCloudAI.py';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'java':
+                    content = `// Java program\npublic class Prediction {\n    public static void main(String[] args) {\n        System.out.println("Prediction for input 5: ${result}");\n    }\n}`;
+                    fileName = 'SmartCloudAI.java';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'html':
+                    content = `<!DOCTYPE html>\n<html>\n<head>\n<title>Prediction</title>\n</head>\n<body>\n<p>Generate by SmartCloud.AI: ${result}</p>\n</body>\n</html>`;
+                    fileName = 'SmartCloudAI.html';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'css':
+                    content = `/* CSS file */\nbody {\n    font-family: Arial, sans-serif;\n}\n\np {\n    color: #333;\n}`;
+                    fileName = 'SmartCloudAI.css';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'javascript':
+                    content = `// JavaScript file\nconsole.log("Generate by SmartCloud.AI: ${result}");`;
+                    fileName = 'SmartCloudAI.js';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'json':
+                    content = `{\n    "prediction": ${result}\n}`;
+                    fileName = 'SmartCloudAI.json';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'xml':
+                    content = `<?xml version="1.0" encoding="UTF-8"?>\n<prediction>${result}</prediction>`;
+                    fileName = 'prediction.xml';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'csv':
+                    content = `prediction\n${result}`;
+                    fileName = 'SmartCloudAI.csv';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'ppt':
+                    content = `data:application/vnd.ms-powerpoint;base64,UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==`;
+                    fileName = 'SmartCloudAI.ppt';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'pptx':
+                    content = `data:application/vnd.openxmlformats-officedocument.presentationml.presentation;base64,UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==`;
+                    fileName = 'SmartCloudAI.pptx';
+                    contentType = validFileTypes[fileType];
+                    break;
+                case 'pdf':
+                    content = `data:application/pdf;base64,UEsFBgAAAAAAAAAAAAAAAAAAAAAAAA==`;
+                    fileName = 'SmartCloudAI.pdf';
+                    contentType = validFileTypes[fileType];
+                    break;
+                default:
+                    content = `Generate by SmartCloud.AI: ${result}`;
+                    fileName = 'SmartCloudAI.txt';
+                    contentType = 'text/plain';
+            }
+
+            return { content, fileName, contentType, suggestion: null };
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+</body>
+
+</html>

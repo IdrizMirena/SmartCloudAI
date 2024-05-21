@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Management</title>
+    <style>
+        /* styles.css */
+
+        body {
+            background-image: url('bgg.jpg');
+            background-size: cover;
+            background-position: center;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: inherit;
+            filter: blur(5px);
+        }
+
+        .header {
+            background-color: #33333373;
+            color: #fff;
+            padding: 1rem;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s ease-in-out;
+        }
+
+        nav ul li a:hover {
+            color: #ff7b00;
+        }
+
+        nav ul li:not(:last-child)::after {
+            content: "|";
+            margin-left: 10px;
+            color: #fff;
+        }
+
+        .logout-btn a {
+            padding: 10px 20px;
+            background-color: #ff7b00;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        .logout-btn a:hover {
+            background-color: #ff954d;
+        }
+
+        .main-content {
+            text-align: center;
+            max-width: 90%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff84;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .style-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .style-list li {
+            margin-bottom: 10px;
+        }
+
+
+        h2 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        ol {
+            margin-top: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        @media only screen and (max-width: 450px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .navbar ul {
+                margin-top: 10px;
+                padding: 0;
+                display: none;
+            }
+
+            .navbar ul.show {
+                display: flex;
+            }
+
+            .navbar ul li {
+                margin-right: 0;
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-around;
+            }
+
+            .navbar .logout-btn {
+                margin-top: 10px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="navbar">
+            <img src="/logo.ico" width="75" alt="">
+            <nav>
+                <ul>
+                    <li><a href="/funcCloud">Your Cloud</a></li>
+                    <li><a href="/suport">Support</a></li>
+                    <li><a href="/ins">Instructions</a></li>
+                </ul>
+            </nav>
+            <div class="logout-btn">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h2>Instructions How to Use the Application</h2>
+        <ul class="style-list">
+            <li>1.Open an account on UCFM - Universal Cloud File Management.</li>
+            <li>2.Verify your account following the steps provided by UCFM.</li>
+            <li>3.Select your files for upload.</li>
+            <li>4.Upload them to the cloud.</li>
+            <li>5.If you want, you can share them using a generated link.</li>
+            <li>6.Make sure to use a secure password for your files.</li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virus Scan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 50px;
+        }
+        input[type="file"] {
+            margin-bottom: 20px;
+        }
+        #result {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h2>Virus Scan</h2>
+    <input type="file" id="fileInput">
+    <button onclick="scanFile()">Scan</button>
+    <div id="result"></div>
+
+    <script src="script.js"></script>
+    <script>
+        async function scanFile() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Ju lutem zgjidhni një dosje për të skanuar.');
+                return;
+            }
+
+            const result = await scanFile(file);
+            const resultDiv = document.getElementById('result');
+
+            if (result.is_infected) {
+                resultDiv.textContent = 'Dosja është infektuar me virus.';
+            } else {
+                resultDiv.textContent = 'Dosja është e pastër.';
+            }
+        }
+    </script>
+</body>
+</html>

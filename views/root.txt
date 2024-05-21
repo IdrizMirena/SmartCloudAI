@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<!-- Coding By CodingNepal - youtube.com/codingnepal -->
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload JavaScript with Progress Ba | CodingNepal</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body>
+    <style>
+        /* Import Google font - Poppins */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: #6990F2;
+        }
+
+        ::selection {
+            color: #fff;
+            background: #6990F2;
+        }
+
+        .wrapper {
+            width: 430px;
+            background: #fff;
+            border-radius: 5px;
+            padding: 30px;
+            box-shadow: 7px 7px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .wrapper header {
+            color: #6990F2;
+            font-size: 27px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .wrapper form {
+            height: 167px;
+            display: flex;
+            cursor: pointer;
+            margin: 30px 0;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            border-radius: 5px;
+            border: 2px dashed #6990F2;
+        }
+
+        form :where(i, p) {
+            color: #6990F2;
+        }
+
+        form i {
+            font-size: 50px;
+        }
+
+        form p {
+            margin-top: 15px;
+            font-size: 16px;
+        }
+
+        section .row {
+            margin-bottom: 10px;
+            background: #E9F0FF;
+            list-style: none;
+            padding: 15px 20px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        section .row i {
+            color: #6990F2;
+            font-size: 30px;
+        }
+
+        section .details span {
+            font-size: 14px;
+        }
+
+        .progress-area .row .content {
+            width: 100%;
+            margin-left: 15px;
+        }
+
+        .progress-area .details {
+            display: flex;
+            align-items: center;
+            margin-bottom: 7px;
+            justify-content: space-between;
+        }
+
+        .progress-area .content .progress-bar {
+            height: 6px;
+            width: 100%;
+            margin-bottom: 4px;
+            background: #fff;
+            border-radius: 30px;
+        }
+
+        .content .progress-bar .progress {
+            height: 100%;
+            width: 0%;
+            background: #6990F2;
+            border-radius: inherit;
+        }
+
+        .uploaded-area {
+            max-height: 232px;
+            overflow-y: scroll;
+        }
+
+        .uploaded-area.onprogress {
+            max-height: 150px;
+        }
+
+        .uploaded-area::-webkit-scrollbar {
+            width: 0px;
+        }
+
+        .uploaded-area .row .content {
+            display: flex;
+            align-items: center;
+        }
+
+        .uploaded-area .row .details {
+            display: flex;
+            margin-left: 15px;
+            flex-direction: column;
+        }
+
+        .uploaded-area .row .details .size {
+            color: #404040;
+            font-size: 11px;
+        }
+
+        .uploaded-area i.fa-check {
+            font-size: 16px;
+        }
+    </style>
+    <div class="wrapper">
+        <header>File Uploader JavaScript</header>
+        <form ref='uploadForm' id='uploadForm' class="dropzone" action='/up' method='post'
+                enctype="multipart/form-data">
+            <input class="file-input" type="file" name="file" hidden>
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Browse File to Upload</p>
+        </form>
+        <section class="progress-area"></section>
+        <section class="uploaded-area"></section>
+    </div>
+
+    <script>
+        const form = document.querySelector("form"),
+            fileInput = document.querySelector(".file-input"),
+            progressArea = document.querySelector(".progress-area"),
+            uploadedArea = document.querySelector(".uploaded-area");
+
+        form.addEventListener("click", () => {
+            fileInput.click();
+        });
+
+        fileInput.onchange = ({ target }) => {
+            let file = target.files[0];
+            if (file) {
+                let fileName = file.name;
+                if (fileName.length >= 12) {
+                    let splitName = fileName.split('.');
+                    fileName = splitName[0].substring(0, 13) + "... ." + splitName[1];
+                }
+                uploadFile(fileName);
+            }
+        }
+
+        function uploadFile(name) {
+            let xhr = new XMLHttpRequest();
+            xhr.open("POST", "php/upload.php");
+            xhr.upload.addEventListener("progress", ({ loaded, total }) => {
+                let fileLoaded = Math.floor((loaded / total) * 100);
+                let fileTotal = Math.floor(total / 1000);
+                let fileSize;
+                (fileTotal < 1024) ? fileSize = fileTotal + " KB" : fileSize = (loaded / (1024 * 1024)).toFixed(2) + " MB";
+                let progressHTML = `<li class="row">
+                          <i class="fas fa-file-alt"></i>
+                          <div class="content">
+                            <div class="details">
+                              <span class="name">${name} • Uploading</span>
+                              <span class="percent">${fileLoaded}%</span>
+                            </div>
+                            <div class="progress-bar">
+                              <div class="progress" style="width: ${fileLoaded}%"></div>
+                            </div>
+                          </div>
+                        </li>`;
+                uploadedArea.classList.add("onprogress");
+                progressArea.innerHTML = progressHTML;
+                if (loaded == total) {
+                    progressArea.innerHTML = "";
+                    let uploadedHTML = `<li class="row">
+                            <div class="content upload">
+                              <i class="fas fa-file-alt"></i>
+                              <div class="details">
+                                <span class="name">${name} • Uploaded</span>
+                                <span class="size">${fileSize}</span>
+                              </div>
+                            </div>
+                            <i class="fas fa-check"></i>
+                          </li>`;
+                    uploadedArea.classList.remove("onprogress");
+                    uploadedArea.insertAdjacentHTML("afterbegin", uploadedHTML);
+                }
+            });
+            let data = new FormData(form);
+            xhr.send(data);
+        }
+    </script>
+
+</body>
+
+</html>
+
+<!--<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Management Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.2/dropzone.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: "Sedgwick Ave Display", cursive;
+            background: linear-gradient(120deg, #a1c4fd, #c2e9fb);
+            color: #333;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100vh;
+        }
+
+        nav {
+            font-family: "Sedgwick Ave Display", cursive;
+        }
+
+
+
+        .navbar-custom {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .navbar-nav .nav-link {
+            color: #007bff;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #0056b3;
+        }
+
+        .btn-outline-primary {
+            border-color: #007bff;
+            color: #007bff;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #007bff;
+            color: #ffffff;
+        }
+
+        .container {
+            padding-top: 5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .file-upload-wrapper {
+            background-color: #ffffff;
+            border: 2px dashed #007bff;
+            border-radius: 10px;
+            padding: 40px;
+            width: 500px;
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: #0056b3;
+        }
+
+        h2,
+        p {
+            font-family: "Sedgwick Ave Display", cursive;
+            text-align: center;
+        }
+
+        h2 {
+            font-family: "Sedgwick Ave Display", cursive;
+            color: #007bff;
+        }
+
+        p {
+            font-family: "Sedgwick Ave Display", cursive;
+            color: #007bff;
+        }
+
+        .fallback {
+            width: 100%;
+            text-align: center;
+        }
+
+        .fallback input[type="file"] {
+            margin-bottom: 20px;
+        }
+
+        .fallback input[type="submit"] {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .fallback input[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        @media (max-width: 768px) {
+            .file-upload-wrapper {
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-nav .nav-item {
+                padding: 10px 0;
+            }
+        }
+
+        @media (max-width: 767.98px) {
+            .navbar-brand img {
+                width: 40px;
+            }
+
+            .navbar-collapse {
+                background-color: #f8f9fa;
+            }
+
+            .navbar-nav .nav-link {
+                color: #007bff;
+            }
+
+            .navbar-nav .nav-link:hover {
+                color: #0056b3;
+            }
+
+            .navbar-nav.ms-auto {
+                margin-left: auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+        <div class="container-fluid">
+            <img src="logo.ico" alt="Logo" width="54px">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/funcCloud">Cloud</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/app">App Cloud</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/fileshare">File Share</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/ucfmAi">Testing with AI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/func2">Edit Files</a>
+                    </li>
+                </ul>
+                <form class="d-flex ms-auto">
+                    <a href="/logout" class="btn btn-outline-primary" type="submit">Logout</a>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h2>Upload Your Files</h2>
+        <p>Drag and drop files below to upload to the cloud.</p>
+        <div class="file-upload-wrapper">
+            <form ref='uploadForm' id='uploadForm' class="dropzone" action='/up' method='post'
+                enctype="multipart/form-data">
+                <div class="fallback">
+                    <input type='submit' multiple type="file" name="file" />
+                    <input type='submit' value='Upload!' />
+                </div>
+                <ul id="uploadedFiles"></ul>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/knn-classifier"></script>
+
+
+    <script>
+        const navTabs = document.querySelectorAll("#nav-tabs > a");
+        navTabs.forEach((tab) => {
+            tab.addEventListener("click", () => {
+                navTabs.forEach((tab) => {
+                    tab.classList.remove("active");
+                });
+                tab.classList.add("active");
+            });
+        });
+
+    </script>
+    <script>
+        /* Perdorimi i tensorflow qe perderuesi nese ben upload ndonje
+         gje te pa lejuar apo te quditshmee , AI klasifikon ate ne 
+         kohe reale,    
+         
+         Ngarkimi i Modelit TensorFlow MobileNet: Skripti JavaScript 
+         fillimisht ngarkon modelin TensorFlow MobileNet për klasifikimin 
+         e imazheve. Kjo bëhet përmes funksionit loadModel(), i cili përdor
+          metoden tf.loadGraphModel() për të ngarkuar modelin prej një
+           burimi në TensorFlow Hub.
+
+         Klasifikimi i Imazheve: Për secilin imazh që ngarkohet përmes
+          Dropzone, skripti klasifikon imazhin duke përdorur modelin
+           MobileNet. Kjo bëhet përmes funksionit classifyImage(file),
+            i cili përdor funksionet e TensorFlow.js për të para-procesuar
+             imazhin dhe pastaj për të klasifikuar imazhin përmbajtja e tij.
+
+         Validimi i Llojit të Skedarit: Skripti kryen validimin e llojit
+          të skedarit të ngarkuar. Përmes Dropzone, skripti kontrollon
+           llojin e skedarit dhe e përcakton nëse është një lloj skedari
+            i lejuar sipas listës së definuar të llojeve të lejuara të 
+            skedarit. Kjo bëhet përmes një funksioni anonim të përcaktuar\
+             brenda opsioneve të Dropzone (accept).
+
+         Incializimi i Dropzone: Skripti inicializon Dropzone-in për të 
+         lejuar ngarkimin e skedarëve dhe për të përcaktuar opsionet për
+          Dropzone, duke përfshirë madhësinë maksimale të skedarit,
+           mesazhin e njëkohshëm të ngarkimit, dhe logjikën e validimit
+            të llojit të skedarit.
+
+         */
+
+        // Ngarkimi i modelit MobileNet nga TensorFlow Hub
+        async function loadModel() {
+            const model = await tf.loadGraphModel('https://tfhub.dev/google/tfjs-model/imagenet/mobilenet_v2_130_224/classification/3/default/1', { fromTFHub: true });
+            return model;
+        }
+
+        // Klasifikimi i imazheve duke përdorur MobileNet
+        async function classifyImage(file) {
+            const model = await loadModel();
+
+            // Ngarkimi i imazhit
+            const img = await loadImage(file);
+
+            // Parapërpunimi i imazhit për modelin MobileNet
+            const processedImage = preprocessImage(img);
+
+            // Bëni parashikime
+            const predictions = model.predict(processedImage);
+
+            // Shfaqni parashikimet
+            console.log(predictions.dataSync());
+        }
+
+        async function loadImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.onload = () => resolve(tf.browser.fromPixels(img));
+                    img.onerror = (error) => reject(error);
+                    img.src = event.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Parapërpunoni imazhin për MobileNet
+        function preprocessImage(img) {
+            // Zmadhojeni imazhin në 224x224
+            const resized = tf.image.resizeBilinear(img, [224, 224]);
+
+            // Normalizoni vlerat e pikës midis -1 dhe 1
+            const normalized = resized.toFloat().div(tf.scalar(127)).sub(tf.scalar(1));
+
+            // Zgjeroni dimensionet për të krijuar një grup me madhësi 1
+            const batched = normalized.expandDims(0);
+            return batched;
+        }
+
+        // Opcionet e Dropzone
+        Dropzone.options.uploadForm = {
+            paramName: "files",
+            maxFilesize: 530,  // Madhësia në MB
+            addRemoveLinks: true,
+            dictDefaultMessage: "Upload your files here",
+            accept: function (file, done) {
+                classifyImage(file);
+                const allowedFileTypes = [".html", ".htm", ".js", ".css", ".php", ".py", ".java", ".c", ".cpp", ".h", ".json", ".xml", ".txt", ".md", ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".pdf", ".doc", ".docx", ".xls", ".xlsx", ".ppt", ".pptx"];
+                const fileExtension = file.name.split('.').pop().toLowerCase();
+
+                if (allowedFileTypes.indexOf("." + fileExtension) === -1) {
+                    alert('Ky skedar nuk pranohet, ju lutemi merrni parasysh llojet e skedarëve që lejohen!' + allowedFileTypes.join(', '));
+                    done("Skedari është i pavlefshëm");
+                } else {
+                    done();
+                }
+            }
+        };
+    </script>
+</body>
+
+</html>
+-->
