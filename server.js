@@ -91,13 +91,13 @@ app.get('/', function (req, res) {
 
 // File generator
 // http:localhost:8000/fileGenerator
-app.get('/fileGenerator', function (req,res) {
+app.get('/fileGenerator/:id', function (req,res) {
     res.render('fileGenerator')
 })
 
 // ChatAI page
 // http:localhost:8000/chatAi
-app.get('/chatAi', function (req, res) {
+app.get('/chatAi/:id', function (req, res) {
     res.render('chatAi');
 });
 
@@ -116,7 +116,7 @@ app.get('/spech', function (req, res) {
 
 // FuncCloud page
 // http:localhost:8000/funcCloud
-app.get('/funcCloud', function  (req, res) {
+app.get('/funcCloud/:id', function  (req, res) {
     res.render('funcCloud', { username: req.session.username });
 });
 
@@ -133,7 +133,7 @@ app.get('/funcCloud', function  (req, res) {
 //});
 
 // func2.ejs page
-app.get('/func2', function (req, res) {
+app.get('/func2/:id', function (req, res) {
     res.render('func2.ejs'); // main/
 });
 
@@ -164,13 +164,13 @@ app.get('/vd-premium', function (req, res) {
 
 // Fileshare page
 // http:localhost:8000/fileshare
-app.get('/fileshare', function (req, res) {
+app.get('/fileshare/:id', function (req, res) {
     res.render('fileshare');
 });
 
 // app page
 // http:localhost:8800/app
-app.get('/app', function (req, res) {
+app.get('/app/:id', function (req, res) {
     res.render('app')
 })
 
@@ -261,7 +261,7 @@ app.get('/514gb', function (req, res) {
 
 // UCFM ai
 // http:localhost:8800/ucfmAi
-app.get('/ucfmAi', function (req, res) {
+app.get('/ucfmAi/:id', function (req, res) {
     res.render('ucfmAi')
 })
 
@@ -274,7 +274,7 @@ app.get('/premium', function (req, res) {
 // Instruction Page
 // http:localhost:8000/ins
 
-app.get('/suport', function (req, res) {
+app.get('/suport/:id', function (req, res) {
     res.render('suport');
 });
 
