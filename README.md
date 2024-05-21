@@ -20,7 +20,7 @@ Installation
 Clone the repository:
 sh
 Copy code
-git clone https://github.com/username/projectname.git
+git clone https://github.com/IdrizMirena/SmartCloudAI/
 Install dependencies:
 sh
 Copy code
@@ -32,7 +32,7 @@ Start the server:
 sh
 Copy code
 npm start
-Open your browser and go to http://localhost:3000.
+Open your browser and go to http://localhost:8081.
 Usage
 Login and Registration
 Visit the registration page to create a new account.
@@ -63,4 +63,4 @@ License
 This project is licensed under the MIT License. See the LICENSE file for more information.
 
 Contact
-If you have any questions or suggestions, please contact us at: support@cloudplatform.com
+If you have any questions or suggestions, please contact us at: idrizmirenaa@gmail.com
