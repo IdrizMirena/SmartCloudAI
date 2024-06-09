@@ -261,7 +261,7 @@ app.get('/514gb', function (req, res) {
 
 // UCFM ai
 // http:localhost:8800/ucfmAi
-app.get('/ucfmAi/:id', function (req, res) {
+app.get('/ucfmAi', function (req, res) {
     res.render('ucfmAi')
 })
 
@@ -274,7 +274,7 @@ app.get('/premium', function (req, res) {
 // Instruction Page
 // http:localhost:8000/ins
 
-app.get('/suport/:id', function (req, res) {
+app.get('/suport', function (req, res) {
     res.render('suport');
 });
 
