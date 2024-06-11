@@ -754,6 +754,7 @@ app.post('/register', async function (req, res) {
             return res.render('emailuse');
         }
 
+        // Salts per round sa her enkryptohet nje password ne mongodb
         const saltRounds = 10;
         const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -765,6 +766,7 @@ app.post('/register', async function (req, res) {
         const device = getDeviceType(agent);
         const geo = geoip.lookup(ip);
 
+        // new data
         const location = {
             country: geo ? geo.country : 'Unknown',
             city: geo ? geo.city : 'Unknown'
